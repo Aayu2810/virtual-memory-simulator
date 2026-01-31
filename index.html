@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Memory Simulator - Home</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">💾 Virtual Memory Simulator</div>
+            <div class="nav-links">
+                <a href="index.html" class="active">Home</a>
+                <a href="simulator.html">Simulator</a>
+                <a href="comparison.html">Compare</a>
+                <a href="theory.html">Theory</a>
+                <a href="about.html">About</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <h1>Virtual Memory Management Simulator</h1>
+            <p class="subtitle">Interactive visualization of page replacement algorithms</p>
+            <div class="hero-buttons">
+                <a href="simulator.html" class="btn btn-primary">Start Simulator</a>
+                <a href="theory.html" class="btn btn-secondary">Learn Theory</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="features">
+            <h2>Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Page Replacement Algorithms</h3>
+                    <p>Simulate FIFO, LRU, Optimal, and LFU algorithms with step-by-step execution</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Real-time Visualization</h3>
+                    <p>Watch memory frames update in real-time with animated transitions</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Performance Metrics</h3>
+                    <p>Track page faults, hits, and hit ratios for each algorithm</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚖️</div>
+                    <h3>Algorithm Comparison</h3>
+                    <p>Compare all algorithms side-by-side to find the best performer</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📋</div>
+                    <h3>Page Table Display</h3>
+                    <p>View complete page table with frame mappings and validity bits</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎓</div>
+                    <h3>Educational Content</h3>
+                    <p>Learn OS concepts with detailed theory and examples</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="algorithms">
+            <h2>Supported Algorithms</h2>
+            <div class="algo-list">
+                <div class="algo-item">
+                    <h3>FIFO (First-In-First-Out)</h3>
+                    <p>Replaces the oldest page in memory. Simple but may not be optimal.</p>
+                    <span class="complexity">Time: O(1)</span>
+                </div>
+                <div class="algo-item">
+                    <h3>LRU (Least Recently Used)</h3>
+                    <p>Replaces the page that hasn't been used for the longest time.</p>
+                    <span class="complexity">Time: O(n)</span>
+                </div>
+                <div class="algo-item">
+                    <h3>Optimal (Bélády's Algorithm)</h3>
+                    <p>Replaces the page that won't be used for the longest time. Theoretical best.</p>
+                    <span class="complexity">Time: O(n²)</span>
+                </div>
+                <div class="algo-item">
+                    <h3>LFU (Least Frequently Used)</h3>
+                    <p>Replaces the page with the lowest access count.</p>
+                    <span class="complexity">Time: O(n)</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="os-concepts">
+            <h2>Operating System Concepts Demonstrated</h2>
+            <div class="concepts-grid">
+                <div class="concept-card">Virtual Memory Management</div>
+                <div class="concept-card">Paging and Page Tables</div>
+                <div class="concept-card">Page Replacement</div>
+                <div class="concept-card">TLB Simulation</div>
+                <div class="concept-card">Memory Mapping</div>
+                <div class="concept-card">Address Translation</div>
+                <div class="concept-card">Page Faults</div>
+                <div class="concept-card">Demand Paging</div>
+                <div class="concept-card">Memory Hierarchy</div>
+                <div class="concept-card">Thrashing Detection</div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Virtual Memory Simulator | Created by Aayushi Priya [1RV24IS005]</p>
+            <p>Operating Systems Course Project | RV College of Engineering</p>
+        </div>
+    </footer>
+</body>
+</html>
