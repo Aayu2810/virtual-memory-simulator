@@ -1,1 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithm Comparison</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">💾 Virtual Memory Simulator</div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="simulator.html">Simulator</a>
+                <a href="comparison.html" class="active">Compare</a>
+                <a href="theory.html">Theory</a>
+                <a href="about.html">About</a>
+            </div>
+        </div>
+    </nav>
 
+    <div class="container">
+        <h1>Algorithm Comparison</h1>
+        
+        <div class="panel">
+            <h2>⚙️ Configuration</h2>
+            <div class="controls">
+                <div class="input-group">
+                    <label>Number of Frames</label>
+                    <input type="number" id="compFrames" value="4" min="2" max="10">
+                </div>
+                <div class="input-group">
+                    <label>Page Reference String</label>
+                    <input type="text" id="compRefString" value="7,0,1,2,0,3,0,4,2,3,0,3,2,1,2,0,1,7,0,1">
+                </div>
+            </div>
+            <button onclick="compareAll()" class="btn btn-primary">📊 Compare All Algorithms</button>
+        </div>
+
+        <div id="comparisonResults" style="display: none;">
+            <div class="panel">
+                <h2>📊 Results</h2>
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Algorithm</th>
+                                <th>Page Faults</th>
+                                <th>Page Hits</th>
+                                <th>Hit Ratio</th>
+                                <th>Performance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="compTable"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h2>📈 Visual Comparison</h2>
+                <div class="bar-chart" id="barChart"></div>
+            </div>
+
+            <div class="panel">
+                <h2>🏆 Best Algorithm</h2>
+                <div id="bestAlgo" class="winner-box"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Virtual Memory Simulator | RV College of Engineering</p>
+        </div>
+    </footer>
+
+    <script src="js/algorithms.js"></script>
+    <script>
+        function compareAll() {
+            const frames = parseInt(document.getElementById('compFrames').value);
+            const refString = document.getElementById('compRefString').value;
+            const refs = refString.split(',').map(x => parseInt(x.trim())).filter(x => !isNaN(x));
+
+            if (refs.length === 0) {
+                alert('Invalid reference string');
+                return;
+            }
+
+            const algorithms = ['fifo', 'lru', 'optimal', 'lfu'];
+            const results = {};
+
+            algorithms.forEach(algo => {
+                results[algo] = simulateAlgorithm(algo, refs, frames);
+            });
+
+            displayResults(results);
+        }
+
+        function displayResults(results) {
+            document.getElementById('comparisonResults').style.display = 'block';
+
+            // Table
+            const table = document.getElementById('compTable');
+            table.innerHTML = '';
+
+            const algoNames = {
+                'fifo': 'FIFO',
+                'lru': 'LRU',
+                'optimal': 'Optimal',
+                'lfu': 'LFU'
+            };
+
+            Object.keys(results).forEach(algo => {
+                const r = results[algo];
+                const row = table.insertRow();
+                row.innerHTML = `
+                    <td><strong>${algoNames[algo]}</strong></td>
+                    <td>${r.faults}</td>
+                    <td>${r.hits}</td>
+                    <td>${r.ratio}%</td>
+                    <td>${getPerformanceRating(parseFloat(r.ratio))}</td>
+                `;
+            });
+
+            // Bar Chart
+            const maxFaults = Math.max(...Object.values(results).map(r => r.faults));
+            const chart = document.getElementById('barChart');
+            chart.innerHTML = '';
+
+            Object.keys(results).forEach(algo => {
+                const width = (results[algo].faults / maxFaults) * 100;
+                chart.innerHTML += `
+                    <div class="bar-container">
+                        <div class="bar-label">${algoNames[algo]}</div>
+                        <div class="bar-wrapper">
+                            <div class="bar-fill" style="width: ${width}%;">
+                                ${results[algo].faults} faults
+                            </div>
+                        </div>
+                        <div class="bar-value">${results[algo].ratio}%</div>
+                    </div>
+                `;
+            });
+
+            // Best Algorithm
+            const best = Object.keys(results).reduce((a, b) =>
+                results[a].faults < results[b].faults ? a : b
+            );
+
+            document.getElementById('bestAlgo').innerHTML = `
+                <h3>🏆 ${algoNames[best]}</h3>
+                <p><strong>${results[best].faults}</strong> page faults with <strong>${results[best].ratio}%</strong> hit ratio</p>
+                <p class="winner-desc">${getAlgorithmDescription(best)}</p>
+            `;
+        }
+
+        function getPerformanceRating(ratio) {
+            if (ratio >= 80) return '⭐⭐⭐⭐⭐ Excellent';
+            if (ratio >= 60) return '⭐⭐⭐⭐ Good';
+            if (ratio >= 40) return '⭐⭐⭐ Average';
+            if (ratio >= 20) return '⭐⭐ Below Average';
+            return '⭐ Poor';
+        }
+
+        function getAlgorithmDescription(algo) {
+            const descriptions = {
+                'fifo': 'FIFO is simple and easy to implement, making it suitable for general-purpose scenarios.',
+                'lru': 'LRU provides better performance by considering recent access patterns.',
+                'optimal': 'Optimal algorithm provides the theoretical best performance but requires future knowledge.',
+                'lfu': 'LFU works well when frequently accessed pages should remain in memory.'
+            };
+            return descriptions[algo];
+        }
+    </script>
+</body>
+</html>
