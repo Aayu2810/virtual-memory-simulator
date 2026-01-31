@@ -1,1 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theory - Virtual Memory</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">💾 Virtual Memory Simulator</div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="simulator.html">Simulator</a>
+                <a href="comparison.html">Compare</a>
+                <a href="theory.html" class="active">Theory</a>
+                <a href="about.html">About</a>
+            </div>
+        </div>
+    </nav>
 
+    <div class="container theory-page">
+        <h1>Virtual Memory Theory</h1>
+
+        <div class="theory-section">
+            <h2>What is Virtual Memory?</h2>
+            <p>Virtual memory is a memory management technique that provides an "idealized abstraction of the storage resources" 
+            to processes. It separates logical memory from physical memory, allowing programs to use more memory than physically available.</p>
+            
+            <div class="theory-box">
+                <h3>Key Benefits:</h3>
+                <ul>
+                    <li>Programs can be larger than physical RAM</li>
+                    <li>Multiple programs can run simultaneously</li>
+                    <li>Memory protection between processes</li>
+                    <li>Efficient memory utilization</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="theory-section">
+            <h2>Paging</h2>
+            <p>Paging is a memory management scheme that eliminates the need for contiguous allocation of physical memory. 
+            It divides virtual memory into fixed-size blocks called <strong>pages</strong> and physical memory into blocks 
+            called <strong>frames</strong>.</p>
+
+            <div class="theory-diagram">
+                <pre>
+Virtual Memory          Physical Memory
+┌──────────┐           ┌──────────┐
+│  Page 0  │────┐      │  Frame 0 │
+├──────────┤    │  ┌──▶├──────────┤
+│  Page 1  │────┼──┘   │  Frame 1 │
+├──────────┤    │      ├──────────┤
+│  Page 2  │    └─────▶│  Frame 2 │
+├──────────┤           ├──────────┤
+│  Page 3  │───────┐   │  Frame 3 │
+└──────────┘       └──▶└──────────┘
+                </pre>
+            </div>
+        </div>
+
+        <div class="theory-section">
+            <h2>Page Table</h2>
+            <p>The page table is a data structure used by the operating system to store the mapping between 
+            virtual pages and physical frames.</p>
+
+            <div class="theory-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Page Number</th>
+                            <th>Frame Number</th>
+                            <th>Valid Bit</th>
+                            <th>Dirty Bit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0</td>
+                            <td>2</td>
+                            <td>1 (Valid)</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>-</td>
+                            <td>0 (Invalid)</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>5</td>
+                            <td>1 (Valid)</td>
+                            <td>1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="theory-section">
+            <h2>Page Replacement Algorithms</h2>
+
+            <div class="algo-theory">
+                <h3>1. FIFO (First-In-First-Out)</h3>
+                <p><strong>Principle:</strong> Replace the oldest page in memory.</p>
+                <p><strong>Advantages:</strong> Simple to implement, low overhead</p>
+                <p><strong>Disadvantages:</strong> Suffers from Bélády's anomaly, doesn't consider page usage</p>
+                <p><strong>Time Complexity:</strong> O(1) per operation</p>
+                <p><strong>Use Case:</strong> General-purpose systems where simplicity is preferred</p>
+            </div>
+
+            <div class="algo-theory">
+                <h3>2. LRU (Least Recently Used)</h3>
+                <p><strong>Principle:</strong> Replace the page that hasn't been used for the longest time.</p>
+                <p><strong>Advantages:</strong> Good performance, considers temporal locality</p>
+                <p><strong>Disadvantages:</strong> Requires tracking access times, more complex</p>
+                <p><strong>Time Complexity:</strong> O(n) per operation</p>
+                <p><strong>Use Case:</strong> Systems where recent access patterns are important</p>
+            </div>
+
+            <div class="algo-theory">
+                <h3>3. Optimal (Bélády's Algorithm)</h3>
+                <p><strong>Principle:</strong> Replace the page that won't be used for the longest time in the future.</p>
+                <p><strong>Advantages:</strong> Theoretical best performance, minimum page faults</p>
+                <p><strong>Disadvantages:</strong> Requires future knowledge, not implementable in practice</p>
+                <p><strong>Time Complexity:</strong> O(n²) per operation</p>
+                <p><strong>Use Case:</strong> Benchmark for comparing other algorithms</p>
+            </div>
+
+            <div class="algo-theory">
+                <h3>4. LFU (Least Frequently Used)</h3>
+                <p><strong>Principle:</strong> Replace the page with the lowest access count.</p>
+                <p><strong>Advantages:</strong> Keeps frequently accessed pages in memory</p>
+                <p><strong>Disadvantages:</strong> Old pages with high counts may never be replaced</p>
+                <p><strong>Time Complexity:</strong> O(n) per operation</p>
+                <p><strong>Use Case:</strong> Systems with clear access frequency patterns</p>
+            </div>
+        </div>
+
+        <div class="theory-section">
+            <h2>Page Faults</h2>
+            <p>A <strong>page fault</strong> occurs when a program tries to access a page that is not currently in physical memory.</p>
+
+            <div class="theory-box">
+                <h3>Page Fault Handling Steps:</h3>
+                <ol>
+                    <li>Check if the page is valid (in the page table)</li>
+                    <li>If invalid, raise page fault interrupt</li>
+                    <li>Find a free frame or select a victim page to replace</li>
+                    <li>Load the required page from disk into the frame</li>
+                    <li>Update the page table</li>
+                    <li>Resume the instruction that caused the fault</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="theory-section">
+            <h2>Performance Metrics</h2>
+            
+            <div class="formula-box">
+                <h3>Hit Ratio</h3>
+                <p>Hit Ratio = (Page Hits) / (Page Hits + Page Faults) × 100%</p>
+                <p class="formula-desc">Higher hit ratio indicates better performance</p>
+            </div>
+
+            <div class="formula-box">
+                <h3>Effective Access Time (EAT)</h3>
+                <p>EAT = (1 - p) × memory_access_time + p × page_fault_time</p>
+                <p class="formula-desc">where p = page fault rate</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Virtual Memory Simulator | RV College of Engineering</p>
+        </div>
+    </footer>
+</body>
+</html>
