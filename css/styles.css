@@ -278,6 +278,16 @@ input, select {
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
+/* Fix for dropdown text visibility */
+select {
+    color: #000;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+select option {
+    color: #000;
+    background: #fff;
+}
 input::placeholder {
     color: rgba(255, 255, 255, 0.6);
 }
